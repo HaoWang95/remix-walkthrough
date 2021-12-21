@@ -1,6 +1,6 @@
 import { useLoaderData, Link } from 'remix';
 import type {Post} from "../../post";
-import { loader } from "../../post";
+import { getPosts } from "../../post";
 
 export default function Posts() {
   const posts = useLoaderData<Post[]>();

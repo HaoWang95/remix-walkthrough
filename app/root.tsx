@@ -138,6 +138,9 @@ function Layout({ children }: { children: React.ReactNode }) {
               <li>
                 <a href="https://github.com/remix-run/remix">GitHub</a>
               </li>
+              <li>
+                <a href="https://reactjs.org/">React</a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -147,7 +150,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <footer className="remix-app__footer">
         <div className="container remix-app__footer-content">
-          <p>&copy; You!</p>
+          <p>&copy; Alwang!</p>
         </div>
       </footer>
     </div>
