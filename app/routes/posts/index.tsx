@@ -2,6 +2,10 @@ import { useLoaderData, Link } from 'remix';
 import type {Post} from "../../post";
 import { getPosts } from "../../post";
 
+export const loader = () => {
+    return getPosts();
+}
+
 export default function Posts() {
   const posts = useLoaderData<Post[]>();
   return (
@@ -9,7 +13,7 @@ export default function Posts() {
       <h1>Posts</h1>
       <ul>
           {posts.map(post => (
-              <li>{post}</li>
+              <Link to={post.slug}>{post.title}</Link>
           ))}
       </ul>
     </div>

@@ -24,7 +24,11 @@ export let loader: LoaderFunction = () => {
       {
         name: "Remix Discord",
         url: "https://discord.gg/VBePs6d"
-      }
+      },
+      {
+        name: "Admin",
+        url: "/admin"
+      },
     ],
     demos: [
       {

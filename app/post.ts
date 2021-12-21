@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs/promises";
 import parseFrontMatter from "front-matter";
 import invariant from "tiny-invariant";
+import { marked } from "marked";
 
 export type Post = {
   slug: string;
@@ -9,13 +10,14 @@ export type Post = {
 };
 
 export type PostMarkdownAttributes = {
-    title: string;
-}
+  title: string;
+};
 
-function isValidPostAttributes(attributes: any): attributes is PostMarkdownAttributes{
-    return attributes?.title;
+function isValidPostAttributes(
+  attributes: any
+): attributes is PostMarkdownAttributes {
+  return attributes?.title;
 }
-
 
 const postsPath = path.join(__dirname, "..", "posts");
 
@@ -24,30 +26,40 @@ export const getPosts = async () => {
   return Promise.all(
     dir.map(async (filename) => {
       const file = await fs.readFile(path.join(postsPath, filename));
-      const { attributes } = parseFrontMatter(file.toString());
+      const { attributes, body } = parseFrontMatter(file.toString());
       invariant(isValidPostAttributes(attributes));
       return {
         slug: filename.replace(/\.md$/, ""),
+        html: marked(body),
         title: attributes.title,
       };
     })
   );
 };
 
-
 export const getPost = async (slug: string) => {
-    const filePath = path.join(postsPath, slug + '.md');
-    await fs.readFile(filePath, {encoding: 'utf-8'},).then(
-        data => {
-            const {attributes} = parseFrontMatter(data.toString());
-            invariant(
-                isValidPostAttributes(attributes),
-                `Post ${filePath} is missing attributes`
-            );
-            return {
-                slug: slug,
-                title: attributes.title
-            }
-        }
-    )
+  const filepath = path.join(postsPath, slug + ".md");
+  const file = await fs.readFile(filepath);
+  const { attributes, body } = parseFrontMatter(file.toString());
+  invariant(
+    isValidPostAttributes(attributes),
+    `Post ${filepath} is missing attributes`
+  );
+  const html = marked(body);
+  return { slug, html, title: attributes.title };
+};
+
+export type NewPost = {
+    title: string;
+    slug: string;
+    markdown: string;
+}
+
+export async function createPost(post: NewPost){
+    const md = `---\ntitle: ${post.title}\n---\n\n${post.markdown}`;
+    await fs.writeFile(
+        path.join(postsPath, post.slug+".md"),
+        md
+    );
+    return getPost(post.slug);
 }

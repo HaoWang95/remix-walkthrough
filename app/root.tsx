@@ -48,8 +48,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
           <p>{error.message}</p>
           <hr />
           <p>
-            Hey, developer, you should replace this with what you want your
-            users to see.
+            It feels like there is something wrong
           </p>
         </div>
       </Layout>
@@ -131,6 +130,9 @@ function Layout({ children }: { children: React.ReactNode }) {
             <ul>
               <li>
                 <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/admin">Admin</Link>
               </li>
               <li>
                 <a href="https://remix.run/docs">Remix Docs</a>
